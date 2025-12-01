@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Member Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp Member Manager</h1>
+
+    <div id="step1" class="step active">
+      <h2>Step 1: Upload Chat Export</h2>
+      <p>Upload your WhatsApp chat export file (.txt)</p>
+      <input type="file" id="chatFile" accept=".txt">
+      <div id="fileStatus" class="status"></div>
+    </div>
+
+    <div id="step2" class="step hidden">
+      <h2>Step 2: Analyze Members</h2>
+
+      <div style="margin-bottom: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+        <p><strong>Option 1: Scan for Active Members</strong></p>
+        <p style="font-size: 13px; margin-bottom: 10px;">
+          1. Open <a href="https://web.whatsapp.com" target="_blank">WhatsApp Web</a> in this tab<br>
+          2. Click on your group to open it<br>
+          3. Then click "Scan Active Members"
+        </p>
+        <button id="scanMembersBtn" class="btn-primary">Scan Active Members</button>
+      </div>
+
+      <div style="margin-bottom: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+        <p><strong>Option 2: Load Active Members from File</strong></p>
+        <p style="font-size: 13px; margin-bottom: 10px;">
+          Load previously saved active members list (JSON file)
+        </p>
+        <input type="file" id="activeMembersFile" accept=".json" style="display: none;">
+        <button id="loadMembersBtn" class="btn-secondary">Load from JSON</button>
+        <div id="loadedFileInfo" class="status" style="margin-top: 10px;"></div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <p><strong>Inactivity Threshold:</strong></p>
+        <select id="inactivityPeriod">
+          <option value="3">3 months</option>
+          <option value="6">6 months</option>
+          <option value="12">12 months</option>
+          <option value="18">18 months</option>
+        </select>
+      </div>
+
+      <button id="analyzeBtn" class="btn-primary" style="margin-top: 15px;" disabled>Analyze Inactive Members</button>
+      <p id="step2Status" class="status" style="margin-top: 10px;"></p>
+    </div>
+
+    <div id="step3" class="step hidden">
+      <h2>Step 3: Review Inactive Members</h2>
+      <p style="font-size: 13px; color: #666; margin-bottom: 10px;">
+        ✓ Verified from current WhatsApp Web group members
+      </p>
+      <div id="analysisResults" class="results">
+        <p class="info">Current Group Members: <span id="totalMembers">0</span></p>
+        <p class="info">Active Members: <span id="activeMembers">0</span></p>
+        <p class="warning">Inactive Members (verified): <span id="inactiveMembers">0</span></p>
+      </div>
+      <button id="startRemovalBtn" class="btn-primary">Start Removal Process</button>
+      <button id="exportListBtn" class="btn-secondary">Export Inactive List</button>
+      <button id="exportActiveMembersBtn" class="btn-secondary">Export Active Members (JSON)</button>
+    </div>
+
+    <div id="step4" class="step hidden">
+      <h2>Step 4: Member Removal</h2>
+      <div id="currentMember" class="member-card">
+        <p><strong>Name/Number:</strong> <span id="memberName"></span></p>
+        <p><strong>Last Active:</strong> <span id="memberLastActive"></span></p>
+        <p><strong>Progress:</strong> <span id="removalProgress"></span></p>
+      </div>
+      <div class="button-group">
+        <button id="removeBtn" class="btn-danger">Remove This Member</button>
+        <button id="skipBtn" class="btn-secondary">Skip This Member</button>
+        <button id="stopBtn" class="btn-warning">Stop Process</button>
+      </div>
+      <div id="removalStatus" class="status"></div>
+      <div id="errorLog" class="error-log hidden"></div>
+    </div>
+
+    <div id="loadingOverlay" class="hidden">
+      <div class="spinner"></div>
+      <p id="loadingText">Processing...</p>
+    </div>
+  </div>
+
+  <script src="chatParser.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
